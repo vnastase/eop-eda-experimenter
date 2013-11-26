@@ -39,6 +39,25 @@ public class DataHandling {
 		for(String cluster: data.keySet()) {
 			dataSplit = splitClusters(dataSplit, data, cluster, xval, ratio);
 		}
+		
+		// if it is only training-testing, then rename the clusters accordingly (the larger one "train")
+		if (xval == 2) { 
+			Object[] names = dataSplit.keySet().toArray();
+			if (dataSplit.get(names[0]).size() > dataSplit.get(names[1]).size()) {
+				dataSplit.put("train", dataSplit.get(names[0]));
+				dataSplit.put("test", dataSplit.get(names[1]));
+
+				dataSplit.remove(names[0]);
+				dataSplit.remove(names[1]);
+			} else {
+				
+				dataSplit.put("train", dataSplit.get(names[1]));
+				dataSplit.put("test", dataSplit.get(names[0]));
+
+				dataSplit.remove(names[0]);
+				dataSplit.remove(names[1]);				
+			}
+		}
 
 		return dataSplit;
 	}
@@ -162,10 +181,17 @@ public class DataHandling {
 			String[] names = (String[]) dataSplit.keySet().toArray();
 			if (dataSplit.get(names[0]).size() > dataSplit.get(names[1]).size()) {
 				dataSplit.put("train", dataSplit.get(names[0]));
-				dataSplit.put("test", dataSplit.get(names[0]));
+				dataSplit.put("test", dataSplit.get(names[1]));
 
 				dataSplit.remove(names[0]);
 				dataSplit.remove(names[1]);
+			} else {
+				
+				dataSplit.put("train", dataSplit.get(names[1]));
+				dataSplit.put("test", dataSplit.get(names[0]));
+
+				dataSplit.remove(names[0]);
+				dataSplit.remove(names[1]);		
 			}
 		}
 		
